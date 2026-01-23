@@ -9,6 +9,7 @@
 - 과제 수정
 - 과제 삭제
 - 기한 초과 과제 자동 업데이트
+- 뚝딱인턴(인턴) 프로필 생성 및 관리
 
 ## 기술 스택
 
@@ -133,6 +134,50 @@ POST /api/assignments/update-overdue
 GET /health
 ```
 
+### 8. 인턴(뚝딱인턴) 생성
+```
+POST /api/interns
+```
+
+**요청 본문:**
+```json
+{
+  "name": "홍길동",
+  "email": "hong@example.com",
+  "department": "Backend",
+  "mentor": "mentor123",
+  "startDate": "2024-01-02T00:00:00Z",
+  "status": "active",
+  "skills": ["Node.js", "TypeScript"],
+  "notes": "뚝딱인턴 1기"
+}
+```
+
+### 9. 인턴 조회
+```
+GET /api/interns
+```
+
+**쿼리 파라미터 (선택사항):**
+- `status`: 활동 상태별 필터링 (active, completed, on_leave)
+- `department`: 부서별 필터링
+- `mentor`: 멘토별 필터링
+
+### 10. 특정 인턴 조회
+```
+GET /api/interns/:id
+```
+
+### 11. 인턴 정보 수정
+```
+PUT /api/interns/:id
+```
+
+### 12. 인턴 삭제
+```
+DELETE /api/interns/:id
+```
+
 ## 데이터 모델
 
 ### Assignment
@@ -152,6 +197,22 @@ GET /health
 }
 ```
 
+### Intern
+```typescript
+{
+  id: string;                     // UUID
+  name: string;                   // 인턴 이름
+  email: string;                  // 연락 이메일
+  department: string;             // 배치 부서
+  mentor: string;                 // 멘토 ID
+  startDate: Date;                // 시작일
+  endDate?: Date;                 // 종료일 (선택)
+  status: 'active' | 'completed' | 'on_leave';
+  skills: string[];               // 기술 스택
+  notes?: string;                 // 참고 메모
+}
+```
+
 ## 프로젝트 구조
 
 ```
@@ -160,10 +221,13 @@ src/
 │   └── Assignment.ts          # 데이터 모델 및 DTO
 ├── services/
 │   └── AssignmentService.ts   # 비즈니스 로직
+│   └── InternService.ts       # 인턴 비즈니스 로직
 ├── controllers/
 │   └── AssignmentController.ts # 요청 처리
+│   └── InternController.ts      # 인턴 요청 처리
 ├── routes/
 │   └── assignment.routes.ts    # 라우팅 설정
+│   └── intern.routes.ts         # 인턴 라우팅 설정
 └── index.ts                    # 애플리케이션 진입점
 ```
 
