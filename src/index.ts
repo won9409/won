@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import { createAssignmentRouter } from './routes/assignment.routes';
+import { createInternRouter } from './routes/intern.routes';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/assignments', createAssignmentRouter());
+app.use('/api/interns', createInternRouter());
 
 // Health check
 app.get('/health', (req, res) => {
@@ -20,7 +22,8 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Assignment Service is running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
-  console.log(`API endpoint: http://localhost:${PORT}/api/assignments`);
+  console.log(`Assignment API: http://localhost:${PORT}/api/assignments`);
+  console.log(`Intern API: http://localhost:${PORT}/api/interns`);
 });
 
 export default app;
